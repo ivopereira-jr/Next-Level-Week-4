@@ -20,7 +20,7 @@ O Move.it é um App que propõe desafios que são recompensados com xp quando co
 
 </br></br>
 
-<img alt="home page moveit" width="100%" src="public/images/capa.png">  
+<img alt="home page moveit" width="100%" src="public/images/moveit.png">  
 </br></br>
 
 ---

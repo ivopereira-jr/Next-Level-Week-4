@@ -51,8 +51,6 @@ $ npm install
 $ yarn dev
 
 
-
-Obs. Você pode utlizar npm ou yarn eu utilizei o yarn
 ```
 
 </br>

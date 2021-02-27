@@ -25,14 +25,23 @@ O Move.it é um App que propõe desafios que são recompensados com xp quando co
 
 ---
 
+## Funcionamento
+
 </br>
- 
-## 🚀  <strong>Tecnologias utilizadas:</strong>
+
+<img alt="funcionamento do moveit" width="100%" src="public/images/show.gif">  
+</br></br>
+
+## 🚀 <strong>Tecnologias utilizadas:</strong>
 
 - CSS3
 - ReactJs
 - Next.Js
 - TypeScript
+
+</br></br>
+
+## Deploy https://letsgo.vercel.app/
 
 </br></br>
 
@@ -45,6 +54,7 @@ $ git clone https://github.com/ivopereira-jr/Next-Level-Week-4.git
 
 # instalar as dependências
 $ yarn install
+ou
 $ npm install
 
 # para iniciar

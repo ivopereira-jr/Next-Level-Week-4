@@ -1,23 +1,45 @@
-import { useContext } from 'react'
-import { ChallengesContext } from '../contexts/ChallengeContext'
-import styles from '../styles/components/ExperienceBar.module.css'
+import { useContext } from 'react';
+import { Flex, Text } from '@chakra-ui/react';
+import { ChallengesContext } from '../contexts/ChallengeContext';
 
-export function ExperienceBar() {
-  const { currentExperience, experienceToNextLevel } = useContext(ChallengesContext);
+export function ExperienceBar(): JSX.Element {
+  const { currentExperienceToNextLevel, experienceToNextLevel } =
+    useContext(ChallengesContext);
 
-  const percentToNextLevel = Math.round(currentExperience * 100) / experienceToNextLevel;
+  const percentToNextLevel =
+    Math.round(currentExperienceToNextLevel * 100) / experienceToNextLevel;
 
   return (
-    <header className={styles.experienceBar}>
-      <span>0 xp</span>
-      <div>
-        <div style={{ width: `${percentToNextLevel}%` }}/>
-
-        <span className={styles.currentExperience} style={{left: `${percentToNextLevel}%`}}>
-          {currentExperience} xp
-        </span>
-      </div>
-      <span>{experienceToNextLevel} xp</span>
-    </header>
-  )
+    <Flex w="100%" h="9" alignItems="center" fontSize="md" fontWeight="500">
+      <Flex as="span">0 xp</Flex>
+      <Flex
+        flex="1"
+        h="0.25rem"
+        bg="gray.300"
+        mx="6"
+        borderRadius="5px"
+        boxShadow="sm"
+        position="relative"
+      >
+        <Flex
+          w={`${percentToNextLevel}%`}
+          h="100%"
+          bg="green.400"
+          borderRadius="5px"
+          boxShadow="sm"
+          position="absolute"
+          bottom="0"
+        />
+        <Text
+          position="absolute"
+          top="2.5"
+          left={`${percentToNextLevel}%`}
+          transform="translateX(-16px)"
+        >
+          {currentExperienceToNextLevel} xp
+        </Text>
+      </Flex>
+      <Flex as="span">{experienceToNextLevel} xp</Flex>
+    </Flex>
+  );
 }

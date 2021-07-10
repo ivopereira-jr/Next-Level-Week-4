@@ -1,14 +1,28 @@
-import { useContext } from 'react'
-import { ChallengesContext } from '../contexts/ChallengeContext'
-import styles from '../styles/components/CompletedChallenges.module.css'
+import { useContext } from 'react';
+import { Flex, Text } from '@chakra-ui/react';
+import { ChallengesContext } from '../contexts/ChallengeContext';
 
-export function CompletedChallenges() {
-  const { challengesCompleted } = useContext(ChallengesContext)
+export function CompletedChallenges(): JSX.Element {
+  const { challengesCompleted } = useContext(ChallengesContext);
 
   return (
-    <div className={styles.completedChallengesContainer}>
-      <span>Desafios completos</span>
-      <span>{challengesCompleted}</span>
-    </div>
-  )
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      mt={14}
+      pb={4}
+      borderBottom="1.5px solid #d7d8da"
+    >
+      <Text
+        color="gray.600"
+        fontSize={['lg', 'xl', 'xl', '2xl']}
+        fontWeight="500"
+      >
+        Desafios completados
+      </Text>
+      <Text color="gray.600" fontSize="24px">
+        {challengesCompleted}
+      </Text>
+    </Flex>
+  );
 }

@@ -20,7 +20,7 @@ export function Countdown(): JSX.Element {
 
   const color = useColorModeValue('gray.700', 'gray.400');
   const colorButton = useColorModeValue('gray.600', 'gray.500');
-  const bg = useColorModeValue('gray.100', 'gray.700');
+  const bg = useColorModeValue('#fff', 'gray.700');
 
   return (
     <Flex w="100%" mt="3.312rem" direction="column">

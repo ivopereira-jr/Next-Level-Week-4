@@ -18,8 +18,8 @@ export function LevelUpModal(): JSX.Element {
   const colorTitle = useColorModeValue('gray.700', 'gray.400');
   const colorText = useColorModeValue('gray.600', 'gray.500');
   const colorBorder = useColorModeValue('gray.300', '#718096');
-  const bg = useColorModeValue('gray.100', 'gray.700');
-  const bgButton = useColorModeValue('blue.100', '#4A5568');
+  const bg = useColorModeValue('#fff', 'gray.700');
+  const bgButton = useColorModeValue('#F5FCFF', '#4A5568');
   const colorOverlay = useColorModeValue('gray.220', '#4A5568');
 
   return (

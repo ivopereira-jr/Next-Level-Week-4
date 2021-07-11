@@ -29,7 +29,7 @@ export function ChallengeBox(): JSX.Element {
   const colorTitle = useColorModeValue('gray.700', 'gray.400');
   const colorText = useColorModeValue('gray.600', 'gray.500');
   const colorBorder = useColorModeValue('gray.300', '#4A5568');
-  const bg = useColorModeValue('gray.100', 'gray.700');
+  const bg = useColorModeValue('#fff', 'gray.700');
   const bgButtonFailed = useColorModeValue('red.100', 'blackAlpha.200');
   const bgButtonCompleted = useColorModeValue('green.100', 'blackAlpha.200');
 

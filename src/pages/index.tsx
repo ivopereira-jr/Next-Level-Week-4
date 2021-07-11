@@ -1,62 +1,120 @@
-import Head from 'next/head'
-import { GetServerSideProps } from 'next'
+import Head from 'next/head';
+import { getSession, signIn } from 'next-auth/client';
+import {
+  Flex,
+  Image,
+  Heading,
+  Text,
+  Button,
+  Grid,
+  Icon,
+} from '@chakra-ui/react';
+import { FaGithub } from 'react-icons/fa';
+import { GetServerSideProps } from 'next';
 
-import { CompletedChallenges } from '../components/CompletedChallenges'
-import { Countdown } from '../components/Countdown'
-import { ExperienceBar } from '../components/ExperienceBar'
-import { Profile } from '../components/Profile'
-import { ChallengeBox } from '../components/ChallengeBox'
-
-import { CountdownProvider } from '../contexts/CountdownContext'
-import { ChallengesProvider } from '../contexts/ChallengeContext'
-
-import styles from '../styles/pages/Home.module.css'
-
-interface AppProps {
-  level: number
-  currentExperience: number
-  challengesCompleted: number
-}
-
-export default function App(props: AppProps) {
+export default function App(): JSX.Element {
   return (
-    <ChallengesProvider
-      level={props.level}
-      currentExperience={props.currentExperience}
-      challengesCompleted={props.challengesCompleted}
-    >
-      <div className={styles.container}>
-        <Head>
-          <title>Início | Let's go</title>
-        </Head>
+    <>
+      <Head>
+        <title>Move.it | Bem vindo</title>
+      </Head>
 
-        <ExperienceBar />
+      <Grid
+        as="main"
+        w="100vw"
+        h="100vh"
+        gridTemplateColumns="768px 1fr"
+        gridColumnGap="32"
+        bg="blue.500"
+      >
+        <Flex as="section" w="100%" h="100%" alignItems="center">
+          <Image
+            w="100%"
+            height={{ base: '34rem', md: '34rem', xl: '44rem' }}
+            src="/images/simbolo-login.png"
+            alt="logo marca moveit"
+          />
+        </Flex>
 
-        <CountdownProvider>
-          <section>
-            <div>
-              <Profile />
-              <CompletedChallenges />
-              <Countdown />
-            </div>
-            <div>
-              <ChallengeBox />
-            </div>
-          </section>
-        </CountdownProvider>
-      </div>
-    </ChallengesProvider>
-  )
+        <Flex as="section" w="100%" h="100%">
+          <Flex
+            w="100%"
+            h="100%"
+            direction="column"
+            alignItems="flex-start"
+            justifyContent="center"
+          >
+            <Image
+              w="100%"
+              maxW="360px"
+              h="4.75rem"
+              src="/icons/moveit-login.svg"
+              alt="logo marca do moveit e texto escrito move.it"
+            />
+
+            <Heading
+              color="gray.100"
+              fontSize="2.4rem"
+              fontWeight="600"
+              mt="6.333rem"
+            >
+              Bem-vindo
+            </Heading>
+
+            <Grid
+              mt="1.6rem"
+              gridTemplateColumns="40px 1fr"
+              gridColumnGap="1.6rem"
+              alignItems="center"
+            >
+              <Button
+                w="10"
+                h="10"
+                p="0"
+                bg="none"
+                color="blue.200"
+                transition="color 600ms"
+                _hover={{
+                  bg: 'none',
+                  color: 'gray.150',
+                }}
+                _active={{
+                  bg: 'none',
+                }}
+                onClick={() => signIn('github', { callbackUrl: '/' })}
+              >
+                <Icon as={FaGithub} w="100%" h="100%" />
+              </Button>
+              <Text
+                color="blue.200"
+                fontSize="1.333rem"
+                fontWeight="500"
+                lineHeight="8"
+              >
+                Faça login com seu Github <br /> para começar
+              </Text>
+            </Grid>
+          </Flex>
+        </Flex>
+      </Grid>
+    </>
+  );
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const { level, currentExperience, challengesCompleted } = ctx.req.cookies
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  // usando o  getSession com o serverside deve passar o req ou context como parametro
+  const session = await getSession({ req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/home',
+        permanent: false,
+      },
+    };
+  }
 
   return {
-    props: {
-      level: Number(level),
-      currentExperience: Number(currentExperience),
-      challengesCompleted: Number(challengesCompleted)
-    }
-  }
-}
+    props: {},
+  };
+};

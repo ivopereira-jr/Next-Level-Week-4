@@ -237,7 +237,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     )
   );
 
-  const users = response.data.map(user => {
+  const users = response?.data.map(user => {
     return {
       name: user.data.name,
       image: user.data.image,

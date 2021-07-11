@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { ChallengesContext } from '../contexts/ChallengeContext';
 
 export function ExperienceBar(): JSX.Element {
@@ -9,8 +9,17 @@ export function ExperienceBar(): JSX.Element {
   const percentToNextLevel =
     Math.round(currentExperienceToNextLevel * 100) / experienceToNextLevel;
 
+  const colorText = useColorModeValue('gray.600', 'gray.500');
+
   return (
-    <Flex w="100%" h="9" alignItems="center" fontSize="md" fontWeight="500">
+    <Flex
+      w="100%"
+      h="9"
+      alignItems="center"
+      fontSize="md"
+      fontWeight="500"
+      color={colorText}
+    >
       <Flex as="span">0 xp</Flex>
       <Flex
         flex="1"

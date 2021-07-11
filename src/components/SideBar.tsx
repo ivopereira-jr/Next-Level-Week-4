@@ -1,9 +1,23 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Flex, Image, Icon, Grid, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Flex,
+  Image,
+  Icon,
+  Grid,
+  Button,
+  useBreakpointValue,
+  useColorMode,
+  useColorModeValue,
+  Skeleton,
+} from '@chakra-ui/react';
 import { BsAward, BsHouseDoor } from 'react-icons/bs';
+import { FiSun, FiMoon } from 'react-icons/fi';
+import { useState } from 'react';
 
 export function SideBar(): JSX.Element {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const { asPath } = useRouter();
   const isHome = asPath === '/home';
 
@@ -11,6 +25,14 @@ export function SideBar(): JSX.Element {
     base: false,
     lg: true,
   });
+
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  const color = useColorModeValue('gray.600', 'gray.500');
+  const bgGradient = useColorModeValue(
+    'linear-gradient(180deg, #FFFFFF 0%, #EAEBED 100%)',
+    'linear-gradient(180deg, #2d3748b2 0%, #2D3748 100%)'
+  );
 
   return (
     <Flex
@@ -20,18 +42,28 @@ export function SideBar(): JSX.Element {
       h="100vh"
       py="32px"
       direction="column"
-      bgGradient="linear(to-b, gray.100, gray.150);"
+      alignItems="center"
+      background={bgGradient}
     >
-      <Image
-        src="/icons/logo-sidebar.svg"
-        alt="Logo marca moveit"
-        w={12}
-        h={10}
-        px={!isWideVersion && '2%'}
-        mx="auto"
-      />
+      <Skeleton isLoaded={imageLoaded}>
+        <Image
+          src="/icons/logo-sidebar.svg"
+          alt="Logo marca moveit"
+          w={12}
+          h={10}
+          px={!isWideVersion && '2%'}
+          mx="auto"
+          onLoad={() => setImageLoaded(true)}
+        />
+      </Skeleton>
 
-      <Flex direction="column" my="auto" alignItems="center">
+      <Flex
+        w="100%"
+        flex="1"
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Grid w="100%" h={14} gridTemplateColumns="4px 1fr">
           {isHome && (
             <Flex
@@ -47,13 +79,14 @@ export function SideBar(): JSX.Element {
             alignItems="center"
             justifyContent="center"
             gridColumn="2"
+            mr="4px"
             px={!isWideVersion && '2%'}
           >
             <Link href="/home">
               <a>
                 <Icon
                   as={BsHouseDoor}
-                  color={isHome ? 'blue.500' : 'gray.600'}
+                  color={isHome ? 'blue.500' : color}
                   fontSize={30}
                 />
               </a>
@@ -76,20 +109,36 @@ export function SideBar(): JSX.Element {
             alignItems="center"
             justifyContent="center"
             gridColumn="2"
+            mr="4px"
             px={!isWideVersion && '2%'}
           >
             <Link href="/leaderboard">
               <a>
                 <Icon
                   as={BsAward}
-                  color={!isHome ? 'blue.500' : 'gray.600'}
                   fontSize={30}
+                  color={!isHome ? 'blue.500' : color}
                 />
               </a>
             </Link>
           </Flex>
         </Grid>
       </Flex>
+
+      <Button
+        w="40px"
+        h="40px"
+        bgColor="transparent"
+        onClick={toggleColorMode}
+        justifySelf="end"
+      >
+        <Icon
+          w={6}
+          h={6}
+          as={colorMode === 'light' ? FiMoon : FiSun}
+          color={color}
+        />
+      </Button>
     </Flex>
   );
 }

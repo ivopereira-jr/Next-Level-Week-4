@@ -1,5 +1,12 @@
 import { useContext } from 'react';
-import { Flex, Heading, Text, Image, Button } from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  Text,
+  Image,
+  Button,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 import { ChallengesContext } from '../contexts/ChallengeContext';
 import { CountdownContext } from '../contexts/CountdownContext';
@@ -19,12 +26,19 @@ export function ChallengeBox(): JSX.Element {
     resetCountdown();
   }
 
+  const colorTitle = useColorModeValue('gray.700', 'gray.400');
+  const colorText = useColorModeValue('gray.600', 'gray.500');
+  const colorBorder = useColorModeValue('gray.300', '#4A5568');
+  const bg = useColorModeValue('gray.100', 'gray.700');
+  const bgButtonFailed = useColorModeValue('red.100', 'blackAlpha.200');
+  const bgButtonCompleted = useColorModeValue('green.100', 'blackAlpha.200');
+
   return (
     <Flex
       as="section"
       w="100%"
       h="100%"
-      bg="gray.100"
+      bg={bg}
       boxShadow="base"
       borderRadius="5px"
       direction="column"
@@ -55,7 +69,8 @@ export function ChallengeBox(): JSX.Element {
               fontWeight="600"
               lineHeight="8"
               py="6"
-              borderBottom="1px solid #DCDDE0"
+              borderBottom="1px solid"
+              borderColor={colorBorder}
             >
               Ganhe {activeChallenge.amount} xp
             </Heading>
@@ -73,7 +88,7 @@ export function ChallengeBox(): JSX.Element {
           >
             <Image src={`icons/${activeChallenge.type}.svg`} />
             <Heading
-              color="gray.700"
+              color={colorTitle}
               fontSize="3xl"
               lineHeight="10"
               fontWeight="600"
@@ -82,7 +97,7 @@ export function ChallengeBox(): JSX.Element {
               Novo desafio
             </Heading>
             <Text
-              color="gray.600"
+              color={colorText}
               fontSize="md"
               lineHeight="7"
               fontWeight="normal"
@@ -93,13 +108,19 @@ export function ChallengeBox(): JSX.Element {
             </Text>
           </Flex>
 
-          <Flex as="footer" w="100%" h="100%" borderTop="1px solid #DCDDE0">
+          <Flex
+            as="footer"
+            w="100%"
+            h="100%"
+            borderTop="1px solid"
+            borderColor={colorBorder}
+          >
             <Button
               w="100%"
               h="100%"
               py="7"
               color="red.500"
-              bg="red.100"
+              bg={bgButtonFailed}
               fontSize="xl"
               fontWeight="500"
               lineHeight="6"
@@ -117,13 +138,13 @@ export function ChallengeBox(): JSX.Element {
             >
               Falhei
             </Button>
-            <Flex as="span" w="1px" h="100%" bg="gray.300" />
+            <Flex as="span" w="1px" h="100%" bg={colorBorder} />
             <Button
               w="100%"
               h="100%"
               py="7"
               color="green.600"
-              bg="green.100"
+              bg={bgButtonCompleted}
               fontSize="xl"
               fontWeight="500"
               lineHeight="6"
@@ -149,7 +170,8 @@ export function ChallengeBox(): JSX.Element {
           direction="column"
           alignItems="center"
           justifyContent="center"
-          color="gray.600"
+          color={colorText}
+          px="4"
         >
           <Heading fontSize="4xl" fontWeight="500" lineHeight="10">
             Inicie um ciclo para receber um desafios

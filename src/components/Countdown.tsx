@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Flex, Text, Button, Icon } from '@chakra-ui/react';
+import { Flex, Text, Button, Icon, useColorModeValue } from '@chakra-ui/react';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { IoMdCheckmarkCircle, IoMdClose } from 'react-icons/io';
 import { CountdownContext } from '../contexts/CountdownContext';
@@ -18,6 +18,10 @@ export function Countdown(): JSX.Element {
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, '0').split('');
   const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('');
 
+  const color = useColorModeValue('gray.700', 'gray.400');
+  const colorButton = useColorModeValue('gray.600', 'gray.500');
+  const bg = useColorModeValue('gray.100', 'gray.700');
+
   return (
     <Flex w="100%" mt="3.312rem" direction="column">
       <Flex
@@ -27,13 +31,13 @@ export function Countdown(): JSX.Element {
         fontFamily="Rajdhani"
         alignItems="center"
         justifyContent="center"
-        color="gray.700"
+        color={color}
         textAlign="center"
       >
         <Flex
           w="100%"
           h="100%"
-          bgColor="gray.100"
+          bgColor={bg}
           boxShadow="base"
           borderRadius="5px 0 0 5px"
           alignItems="center"
@@ -46,7 +50,7 @@ export function Countdown(): JSX.Element {
         <Flex
           w="100%"
           h="100%"
-          bgColor="gray.100"
+          bgColor={bg}
           boxShadow="base"
           borderRadius="0 5px 5px 0"
           alignItems="center"
@@ -61,7 +65,7 @@ export function Countdown(): JSX.Element {
         <Flex
           w="100%"
           h="100%"
-          bgColor="gray.100"
+          bgColor={bg}
           boxShadow="base"
           borderRadius="5px 0 0 5px"
           alignItems="center"
@@ -74,7 +78,7 @@ export function Countdown(): JSX.Element {
         <Flex
           w="100%"
           h="100%"
-          bgColor="gray.100"
+          bgColor={bg}
           boxShadow="base"
           borderRadius="0 5px 5px 0"
           alignItems="center"
@@ -101,8 +105,8 @@ export function Countdown(): JSX.Element {
           outline="none"
           isDisabled
           _disabled={{
-            color: 'gray.600',
-            bgColor: 'gray.100',
+            color: colorButton,
+            bgColor: bg,
             cursor: 'no-drop',
           }}
         >
@@ -125,8 +129,8 @@ export function Countdown(): JSX.Element {
               fontSize="1.333rem"
               fontWeight="600"
               lineHeight="1.6rem"
-              color="gray.600"
-              bgColor="gray.100"
+              color={colorButton}
+              bgColor={bg}
               textAlign="center"
               borderRadius="5px"
               mt="8"

@@ -1,11 +1,26 @@
 import { useContext } from 'react';
-import { Flex, Heading, Image, Text, Button, Icon } from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  Image,
+  Text,
+  Button,
+  Icon,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { FaTwitter } from 'react-icons/fa';
 
 import { ChallengesContext } from '../contexts/ChallengeContext';
 
 export function LevelUpModal(): JSX.Element {
   const { level, closeLevelUpModal } = useContext(ChallengesContext);
+
+  const colorTitle = useColorModeValue('gray.700', 'gray.400');
+  const colorText = useColorModeValue('gray.600', 'gray.500');
+  const colorBorder = useColorModeValue('gray.300', '#718096');
+  const bg = useColorModeValue('gray.100', 'gray.700');
+  const bgButton = useColorModeValue('blue.100', '#4A5568');
+  const colorOverlay = useColorModeValue('gray.220', '#4A5568');
 
   return (
     <Flex
@@ -25,7 +40,7 @@ export function LevelUpModal(): JSX.Element {
       <Flex
         w="100%"
         h="100%"
-        bg="gray.220"
+        bg={colorOverlay}
         opacity="0.6"
         position="absolute"
         top="0"
@@ -38,7 +53,7 @@ export function LevelUpModal(): JSX.Element {
         w="100%"
         maxW="400px"
         height="22.625rem"
-        bg="gray.100"
+        bg={bg}
         borderRadius="5px"
         direction="column"
         position="relative"
@@ -68,7 +83,8 @@ export function LevelUpModal(): JSX.Element {
           alignItems="center"
           justifyContent="center"
           textAlign="center"
-          borderBottom="1px solid #DCDDE0"
+          borderBottom="1px solid"
+          borderColor={colorBorder}
         >
           <Flex
             w="100%"
@@ -88,7 +104,7 @@ export function LevelUpModal(): JSX.Element {
             </Text>
           </Flex>
           <Heading
-            color="gray.700"
+            color={colorTitle}
             fontSize="3xl"
             fontWeight="600"
             lineHeight="10"
@@ -97,7 +113,7 @@ export function LevelUpModal(): JSX.Element {
             Parabéns
           </Heading>
           <Text
-            color="gray.600"
+            color={colorText}
             fontSize="xl"
             fontWeight="normal"
             lineHeight="7"
@@ -110,7 +126,7 @@ export function LevelUpModal(): JSX.Element {
           w="100%"
           h="80px"
           color="blue.400"
-          bg="blue.100"
+          bg={bgButton}
           borderRadius="0 0 5px 5px"
           transition="600ms"
           _hover={{

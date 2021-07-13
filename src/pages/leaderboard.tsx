@@ -19,8 +19,27 @@ import { query as q } from 'faunadb';
 import { fauna } from '../services/fauna';
 
 import { SideBar } from '../components/SideBar';
+import { UserProps } from './home';
 
-export default function Leaderboard({ users }): JSX.Element {
+type User = {
+  name: string;
+  image: string;
+  email: string;
+  level: string;
+  experience: string;
+  challenges_completed: string;
+  current_experience_to_next_level: string;
+};
+
+interface LeaderboardProps {
+  users: User[];
+}
+
+interface ResponseData {
+  data: UserProps[];
+}
+
+export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -230,14 +249,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const response = await fauna.query(
+  const response: ResponseData = await fauna.query(
     q.Map(
       q.Paginate(q.Documents(q.Collection('users'))),
       q.Lambda(x => q.Get(x))
     )
   );
 
-  const users = response?.data.map(user => {
+  const users = response.data.map(user => {
     return {
       name: user.data.name,
       image: user.data.image,

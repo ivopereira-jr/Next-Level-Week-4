@@ -3,7 +3,7 @@
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
-import { Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { query as q } from 'faunadb';
 
 import { SideBar } from '../components/SideBar';
@@ -17,7 +17,7 @@ import { CountdownProvider } from '../contexts/CountdownContext';
 import { ChallengesProvider } from '../contexts/ChallengeContext';
 import { fauna } from '../services/fauna';
 
-interface UserProps {
+export interface UserProps {
   ref: never;
   ts: number;
   data: {
@@ -44,8 +44,6 @@ export default function Home({
   currentExperience,
   challengesCompleted,
 }: HomeProps): JSX.Element {
-  const bgColor = useColorModeValue('#E5E5E5', '#1A202C');
-
   return (
     <>
       <ChallengesProvider
@@ -54,7 +52,7 @@ export default function Home({
         currentExperience={currentExperience}
         challengesCompleted={challengesCompleted}
       >
-        <Flex as="main" w="100%" h="100vh" bgColor={bgColor}>
+        <Flex as="main" w="100%" h="100vh">
           <Head>
             <title>Move.it | Home</title>
           </Head>

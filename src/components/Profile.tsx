@@ -18,7 +18,7 @@ export function Profile(): JSX.Element {
   const colorTitle = useColorModeValue('gray.700', 'gray.400');
 
   return (
-    <Flex alignItems="center">
+    <Flex w="100%" h="100%" alignItems="center">
       <Image
         w="5.5rem"
         h="5.5rem"

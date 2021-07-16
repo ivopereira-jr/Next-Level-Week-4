@@ -3,7 +3,7 @@
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
-import { Flex } from '@chakra-ui/react';
+import { Flex, useColorModeValue, useMediaQuery } from '@chakra-ui/react';
 import { query as q } from 'faunadb';
 
 import { SideBar } from '../components/SideBar';
@@ -16,6 +16,7 @@ import { ChallengeBox } from '../components/ChallengeBox';
 import { CountdownProvider } from '../contexts/CountdownContext';
 import { ChallengesProvider } from '../contexts/ChallengeContext';
 import { fauna } from '../services/fauna';
+import { ButtonActions } from '../components/ButtonActions';
 
 export interface UserProps {
   ref: never;
@@ -44,6 +45,9 @@ export default function Home({
   currentExperience,
   challengesCompleted,
 }: HomeProps): JSX.Element {
+  const [isLargerThan1370] = useMediaQuery('(max-width: 1370px)');
+  const bg = useColorModeValue('#E5E5E5', '#1A202C');
+
   return (
     <>
       <ChallengesProvider
@@ -52,7 +56,7 @@ export default function Home({
         currentExperience={currentExperience}
         challengesCompleted={challengesCompleted}
       >
-        <Flex as="main" w="100%" h="100vh">
+        <Flex as="main" w="100%" h="100vh" bgColor={bg}>
           <Head>
             <title>Move.it | Home</title>
           </Head>
@@ -63,20 +67,29 @@ export default function Home({
             as="section"
             w="100%"
             maxW="990px"
+            h="100%"
             mx="auto"
-            py={10}
+            py={isLargerThan1370 ? 5 : 10}
             direction="column"
           >
             <ExperienceBar />
 
             <CountdownProvider>
-              <Flex w="100%" mt={28} justifyContent="space-between">
+              <Flex
+                w="100%"
+                maxH="500px"
+                h="100%"
+                mt={isLargerThan1370 ? 10 : 28}
+                py={isLargerThan1370 ? 4 : ''}
+                justifyContent="space-between"
+              >
                 <Flex w="100%" maxW="389px" h="100%" direction="column">
                   <Profile />
                   <CompletedChallenges />
                   <Countdown />
+                  <ButtonActions />
                 </Flex>
-                <Flex w="100%" maxW="468px">
+                <Flex w="100%" maxW="468px" h="100%">
                   <ChallengeBox />
                 </Flex>
               </Flex>

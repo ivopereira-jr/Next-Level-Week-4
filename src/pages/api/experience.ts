@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { query as q } from 'faunadb';
 import { getSession } from 'next-auth/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fauna } from '../../services/fauna';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   if (req.method === 'PUT') {
     const session = await getSession({ req });
     const {

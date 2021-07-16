@@ -8,11 +8,14 @@ import {
   Button,
   Grid,
   Icon,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
 import { GetServerSideProps } from 'next';
 
 export default function App(): JSX.Element {
+  const [isLargerThan1370] = useMediaQuery('(max-width: 1370px)');
+
   return (
     <>
       <Head>
@@ -30,7 +33,7 @@ export default function App(): JSX.Element {
         <Flex as="section" w="100%" h="100%" alignItems="center">
           <Image
             w="100%"
-            height={{ base: '34rem', md: '34rem', xl: '44rem' }}
+            height={isLargerThan1370 ? '34rem' : '44rem'}
             src="/images/simbolo-login.png"
             alt="logo marca moveit"
           />

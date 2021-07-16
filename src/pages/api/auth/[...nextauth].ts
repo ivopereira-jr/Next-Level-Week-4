@@ -37,6 +37,7 @@ export default NextAuth({
                   level: '1',
                   experience: '0',
                   challenges_completed: '0',
+                  current_experience_to_next_level: '0',
                 },
               }),
               // se sim pega os dados

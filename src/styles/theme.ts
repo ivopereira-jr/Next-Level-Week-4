@@ -1,21 +1,34 @@
 import { extendTheme, ThemeConfig } from '@chakra-ui/react';
-import { createBreakpoints } from '@chakra-ui/theme-tools';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
   useSystemColorMode: false,
 };
 
-const breakpoints = createBreakpoints({
-  sm: '30em',
-  md: '48em',
-  lg: '62em',
-  xl: '85.625em',
-});
+const styles = {
+  global: props => ({
+    'html, body': {
+      bg: props.colorMode === 'light' ? '#E5E5E5' : '#1A202C',
+      color: 'gray.600',
+    },
+    Table: {
+      borderCollapse: 'separate !important',
+      borderSpacing: '0 8px',
+    },
+    th: {
+      border: 'none !important',
+    },
+    td: {
+      border: 'none !important',
+    },
+    '*, *::before, &::after': {
+      borderColor: 'none',
+    },
+  }),
+};
 
 export const theme = extendTheme({
   config,
-  breakpoints,
   colors: {
     gray: {
       '700': '#2E384D', // title
@@ -46,28 +59,8 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'Inter',
-    body: 'Inter',
+    heading: 'Inter !important',
+    body: 'Inter !important',
   },
-  styles: {
-    global: {
-      body: {
-        bg: 'gray.250',
-        color: 'gray.600',
-      },
-      Table: {
-        borderCollapse: 'separate !important',
-        borderSpacing: '0 8px',
-      },
-      th: {
-        border: 'none !important',
-      },
-      td: {
-        border: 'none !important',
-      },
-      '*, *::before, &::after': {
-        borderColor: 'none',
-      },
-    },
-  },
+  styles,
 });

@@ -12,6 +12,7 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { getSession } from 'next-auth/client';
 import { GetServerSideProps } from 'next';
@@ -22,6 +23,7 @@ import { SideBar } from '../components/SideBar';
 import { UserProps } from './home';
 
 type User = {
+  ts: number;
   name: string;
   image: string;
   email: string;
@@ -40,13 +42,18 @@ interface ResponseData {
 }
 
 export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
+  const bgColor = useColorModeValue('#E5E5E5', '#1A202C');
+  const bgColorCard = useColorModeValue('#fff', 'gray.700');
+  const colorTitle = useColorModeValue('gray.700', 'gray.400');
+  const colorText = useColorModeValue('gray.600', 'gray.500');
+
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
 
   return (
-    <Flex as="main" w="100%" h="100%">
+    <Flex as="main" w="100%" h="100%" bg={bgColor}>
       <Head>
         <title>Move.it | Leaderboard</title>
       </Head>
@@ -67,7 +74,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
             fontSize="4xl"
             fontWeight="600"
             lineHeight="5xl"
-            color="gray.700"
+            color={colorTitle}
           >
             Leaderboard
           </Heading>
@@ -81,7 +88,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                   fontSize="14"
                   fontWeight="bold"
                   opacity="0.5"
-                  color="gray.600"
+                  color={colorText}
                 >
                   Posição
                 </Th>
@@ -92,13 +99,13 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                   fontSize="14"
                   fontWeight="bold"
                   opacity="0.5"
-                  color="gray.600"
+                  color={colorText}
                 />
                 <Th
                   fontSize="14"
                   fontWeight="bold"
                   opacity="0.5"
-                  color="gray.600"
+                  color={colorText}
                 >
                   Usuário
                 </Th>
@@ -108,7 +115,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                     fontSize="14"
                     fontWeight="bold"
                     opacity="0.5"
-                    color="gray.600"
+                    color={colorText}
                     textAlign="left"
                     p="0"
                   >
@@ -120,7 +127,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                   fontSize="14"
                   fontWeight="bold"
                   opacity="0.5"
-                  color="gray.600"
+                  color={colorText}
                   textAlign="center"
                   px="12"
                 >
@@ -130,11 +137,10 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
             </Thead>
 
             <Tbody>
-              {users.map(user => (
-                <Tr w="100%" h="96px">
+              {users.map((user, index) => (
+                <Tr key={user.email} w="100%" h="96px" bg={bgColorCard}>
                   <Td
-                    bg="gray.100"
-                    color="gray.600"
+                    color={colorText}
                     p="0"
                     w="72px"
                     h="96px"
@@ -143,14 +149,14 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                     textAlign="center"
                     borderRadius="5px 0 0 5px"
                   >
-                    $
+                    {index + 1}
                   </Td>
-                  <Td p="0" w="4px" h="100%" />
+                  <Td p="0" w="4px" h="100%" bg={bgColor} />
 
                   <Td
                     w={!isWideVersion && '48'}
-                    bg="gray.100"
-                    color="gray.600"
+                    bg={bgColorCard}
+                    color={colorText}
                     p="0"
                   >
                     <Box display="grid" gridTemplateColumns="70px 1fr" ml="6">
@@ -171,7 +177,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                           fontSize="xl"
                           fontWeight="600"
                           lineHeight="2xl"
-                          color="gray.700"
+                          color={colorTitle}
                         >
                           {user.name}
                         </Heading>
@@ -190,7 +196,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                           <Text
                             fontSize="md"
                             fontWeight="normal"
-                            color="gray.600"
+                            color={colorText}
                           >
                             level {user.level}
                           </Text>
@@ -199,19 +205,18 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                     </Box>
                   </Td>
                   {isWideVersion && (
-                    <Td w="44" bg="gray.100" color="gray.600" px="0">
+                    <Td w="44" color={colorText} px="0">
                       <Flex fontSize="md" fontWeight="500">
                         <Box color="blue.500" mr="1">
                           {user.challenges_completed}
                         </Box>
-                        <Text color="gray.600">completados</Text>
+                        <Text color={colorText}>completados</Text>
                       </Flex>
                     </Td>
                   )}
                   <Td
                     w="44"
-                    bg="gray.100"
-                    color="gray.600"
+                    color={colorText}
                     px="8"
                     textAlign="center"
                     borderRadius="0 5px 5px 0"
@@ -222,7 +227,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
                       justifyContent="center"
                     >
                       <Box color="blue.500">{user.experience}</Box>
-                      <Text color="gray.600" ml="1">
+                      <Text color={colorText} ml="1">
                         xp
                       </Text>
                     </Flex>
@@ -249,15 +254,34 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const response: ResponseData = await fauna.query(
+  // update the level field
+  await fauna.query(
     q.Map(
       q.Paginate(q.Documents(q.Collection('users'))),
-      q.Lambda(x => q.Get(x))
+      q.Lambda(
+        'ref',
+        q.Let(
+          { doc: q.Get(q.Var('ref')) },
+          q.Update(q.Var('ref'), {
+            data: {
+              level: q.ToInteger(q.Select(['data', 'level'], q.Var('doc'))),
+            },
+          })
+        )
+      )
+    )
+  );
+
+  const response: ResponseData = await fauna.query(
+    q.Map(
+      q.Paginate(q.Match(q.Index('users_by_level_descending'))),
+      q.Lambda(['level', 'ref'], q.Get(q.Var('ref')))
     )
   );
 
   const users = response.data.map(user => {
     return {
+      id: user.ts,
       name: user.data.name,
       image: user.data.image,
       level: user.data.level,

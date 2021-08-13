@@ -20,7 +20,7 @@ import { query as q } from 'faunadb';
 import { fauna } from '../services/fauna';
 
 import { SideBar } from '../components/SideBar';
-import { UserProps } from './home';
+import { ResponseProps } from './home';
 
 type User = {
   ts: number;
@@ -38,7 +38,7 @@ interface LeaderboardProps {
 }
 
 interface ResponseData {
-  data: UserProps[];
+  data: ResponseProps[];
 }
 
 export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
@@ -254,28 +254,27 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  // update the level field
-  await fauna.query(
-    q.Map(
-      q.Paginate(q.Documents(q.Collection('users'))),
-      q.Lambda(
-        'ref',
-        q.Let(
-          { doc: q.Get(q.Var('ref')) },
-          q.Update(q.Var('ref'), {
-            data: {
-              level: q.ToInteger(q.Select(['data', 'level'], q.Var('doc'))),
-            },
-          })
-        )
-      )
-    )
-  );
-
+  // get || update the experience field
   const response: ResponseData = await fauna.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('users_by_level_descending'))),
-      q.Lambda(['level', 'ref'], q.Get(q.Var('ref')))
+      q.Paginate(q.Match(q.Index('users_by_experience_descending'))),
+      q.Lambda(
+        ['experience', 'ref'],
+        q.If(
+          q.Not(q.IsInteger(q.Var('experience'))),
+          q.Let(
+            { doc: q.Get(q.Var('ref')) },
+            q.Update(q.Var('ref'), {
+              data: {
+                experience: q.ToInteger(
+                  q.Select(['data', 'experience'], q.Var('doc'))
+                ),
+              },
+            })
+          ),
+          q.Get(q.Var('ref'))
+        )
+      )
     )
   );
 

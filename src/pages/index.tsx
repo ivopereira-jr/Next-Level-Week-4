@@ -69,6 +69,8 @@ export default function App(): JSX.Element {
               gridTemplateColumns="40px 1fr"
               gridColumnGap="1.6rem"
               alignItems="center"
+              cursor="pointer"
+              onClick={() => signIn('github', { callbackUrl: '/' })}
             >
               <Button
                 w="10"
@@ -84,7 +86,6 @@ export default function App(): JSX.Element {
                 _active={{
                   bg: 'none',
                 }}
-                onClick={() => signIn('github', { callbackUrl: '/' })}
               >
                 <Icon as={FaGithub} w="100%" h="100%" />
               </Button>

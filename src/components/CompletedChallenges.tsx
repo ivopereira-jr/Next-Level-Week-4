@@ -16,7 +16,7 @@ export function CompletedChallenges(): JSX.Element {
   const colorBorder = useColorModeValue('#d7d8da', '#2D3748');
 
   return (
-    <Grid mt={isLargerThan1370 ? 10 : 14} templateRows="29px 1.5px" gap={4}>
+    <Grid py={isLargerThan1370 ? 10 : 14} templateRows="29px 1.5px" gap={4}>
       <Flex alignItems="center" justifyContent="space-between">
         <Text color={color} fontSize="lg" fontWeight="500">
           Desafios completados

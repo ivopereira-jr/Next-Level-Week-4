@@ -13,13 +13,7 @@ export function Countdown(): JSX.Element {
   const bg = useColorModeValue('#fff', 'gray.700');
 
   return (
-    <Flex
-      as="section"
-      w="100%"
-      h="100%"
-      pt={isLargerThan1370 ? '3rem' : '3.312rem'}
-      direction="column"
-    >
+    <Flex as="section" w="100%" h="100%" pb={8} direction="column">
       <Flex
         w="100%"
         h={isLargerThan1370 ? 32 : 36}

@@ -10,8 +10,9 @@ import {
 import { VscSignOut } from 'react-icons/vsc';
 import { signOut } from 'next-auth/client';
 import { ChallengesContext } from '../contexts/ChallengeContext';
+import { HomeProps as UserProps } from '../pages/home';
 
-export function Profile(): JSX.Element {
+export function Profile({ user }: UserProps): JSX.Element {
   const { level, experience } = useContext(ChallengesContext);
 
   const color = useColorModeValue('gray.600', 'gray.500');
@@ -24,14 +25,14 @@ export function Profile(): JSX.Element {
         h="5.5rem"
         objectFit="cover"
         borderRadius="50%"
-        src="https://github.com/ivopereira-jr.png"
-        alt="Ivo Pereira"
+        src={user.image}
+        alt={user.name}
       />
 
       <Flex w="100%" alignItems="center" justifyContent="space-between">
         <Flex direction="column" alignItems="flex-start" ml="6">
           <Text fontSize="2xl" fontWeight="600" color={colorTitle}>
-            Ivo Pereira
+            {user.name}
           </Text>
 
           <Flex alignItems="center">

@@ -17,7 +17,7 @@ export function ButtonActions(): JSX.Element {
   const bg = useColorModeValue('#fff', 'gray.700');
 
   return (
-    <Box h="100%">
+    <>
       {hasFinished ? (
         <Button
           w="100%"
@@ -26,7 +26,6 @@ export function ButtonActions(): JSX.Element {
           lineHeight="1.6rem"
           textAlign="center"
           borderRadius="5px"
-          mt="8"
           p="0"
           py="2.5rem"
           rightIcon={
@@ -63,7 +62,6 @@ export function ButtonActions(): JSX.Element {
               bgColor={bg}
               textAlign="center"
               borderRadius="5px"
-              mt="8"
               p="0"
               py="2.5rem"
               rightIcon={<Icon as={IoMdClose} fontSize="24" />}
@@ -112,7 +110,6 @@ export function ButtonActions(): JSX.Element {
               bgColor="blue.500"
               textAlign="center"
               borderRadius="5px"
-              mt="8"
               p="0"
               py="2.5rem"
               rightIcon={<Icon as={BsFillPlayFill} fontSize="24" mt="0.5" />}
@@ -131,6 +128,6 @@ export function ButtonActions(): JSX.Element {
           )}
         </>
       )}
-    </Box>
+    </>
   );
 }

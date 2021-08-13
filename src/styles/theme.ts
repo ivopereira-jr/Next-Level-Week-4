@@ -1,4 +1,16 @@
 import { extendTheme, ThemeConfig } from '@chakra-ui/react';
+import { createBreakpoints } from '@chakra-ui/theme-tools';
+
+const breakpoints = createBreakpoints({
+  sm: '100px',
+  md: '200px',
+  lg: '300px',
+  xl: '400px',
+});
+
+const overrides = {
+  breakpoints,
+};
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -62,5 +74,6 @@ export const theme = extendTheme({
     heading: 'Inter !important',
     body: 'Inter !important',
   },
+  overrides,
   styles,
 });

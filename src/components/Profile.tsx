@@ -9,10 +9,18 @@ import {
 } from '@chakra-ui/react';
 import { VscSignOut } from 'react-icons/vsc';
 import { signOut } from 'next-auth/client';
-import { ChallengesContext } from '../contexts/ChallengeContext';
-import { HomeProps as UserProps } from '../pages/home';
 
-export function Profile({ user }: UserProps): JSX.Element {
+import { ChallengesContext } from '../contexts/ChallengeContext';
+
+interface ProfileProps {
+  user: {
+    name: string;
+    image: string;
+  };
+  isLoading: any;
+}
+
+export function Profile({ user, isLoading }: ProfileProps): JSX.Element {
   const { level, experience } = useContext(ChallengesContext);
 
   const color = useColorModeValue('gray.600', 'gray.500');
@@ -27,6 +35,7 @@ export function Profile({ user }: UserProps): JSX.Element {
         borderRadius="50%"
         src={user.image}
         alt={user.name}
+        onLoad={() => isLoading(true)}
       />
 
       <Flex w="100%" alignItems="center" justifyContent="space-between">

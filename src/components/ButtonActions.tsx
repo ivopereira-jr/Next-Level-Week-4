@@ -26,8 +26,9 @@ export function ButtonActions(): JSX.Element {
           lineHeight="1.6rem"
           textAlign="center"
           borderRadius="5px"
+          boxShadow="base"
           p="0"
-          py="2.5rem"
+          py="10"
           rightIcon={
             <Icon as={IoMdCheckmarkCircle} fontSize="24" color="green.400" />
           }
@@ -62,8 +63,9 @@ export function ButtonActions(): JSX.Element {
               bgColor={bg}
               textAlign="center"
               borderRadius="5px"
+              boxShadow="base"
               p="0"
-              py="2.5rem"
+              py="10"
               rightIcon={<Icon as={IoMdClose} fontSize="24" />}
               outline="none"
               onClick={resetCountdown}
@@ -110,8 +112,9 @@ export function ButtonActions(): JSX.Element {
               bgColor="blue.500"
               textAlign="center"
               borderRadius="5px"
+              boxShadow="base"
               p="0"
-              py="2.5rem"
+              py="10"
               rightIcon={<Icon as={BsFillPlayFill} fontSize="24" mt="0.5" />}
               transition="800ms"
               onClick={startCountDown}

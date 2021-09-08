@@ -3,8 +3,8 @@ import { Provider as NextAuthProvider } from 'next-auth/client';
 import NextNProgress from 'nextjs-progressbar';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import { theme } from '../styles/theme';
 import { Chakra } from '../Chakra';
+import { theme } from '../styles/theme';
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (

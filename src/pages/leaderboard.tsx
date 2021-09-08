@@ -1,36 +1,31 @@
+/* eslint-disable react/jsx-boolean-value */
 import Head from 'next/head';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/client';
+import { useState } from 'react';
 import {
   Flex,
-  Image,
   Heading,
-  Text,
   Box,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { getSession } from 'next-auth/client';
-import { GetServerSideProps } from 'next';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { query as q } from 'faunadb';
 import { fauna } from '../services/fauna';
 
 import { SideBar } from '../components/SideBar';
+import { UsersList } from '../components/UsersList';
 import { ResponseProps } from './home';
 
-type User = {
-  ts: number;
+export type User = {
+  id: number;
   name: string;
   image: string;
   email: string;
   level: string;
   experience: string;
   challenges_completed: string;
-  current_experience_to_next_level: string;
 };
 
 interface LeaderboardProps {
@@ -42,10 +37,13 @@ interface ResponseData {
 }
 
 export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
+  const [loaded, setLoaded] = useState(false);
+
   const bgColor = useColorModeValue('#E5E5E5', '#1A202C');
-  const bgColorCard = useColorModeValue('#fff', 'gray.700');
   const colorTitle = useColorModeValue('gray.700', 'gray.400');
-  const colorText = useColorModeValue('gray.600', 'gray.500');
+
+  const colorSkeleton = useColorModeValue('#d8d8d8', '#4A5568');
+  const skeletonHighlight = useColorModeValue('#f7f7f7', '#CBD5E0');
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -79,163 +77,43 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
             Leaderboard
           </Heading>
 
-          <Table w="100%" mt="10" mx="auto">
-            <Thead>
-              <Tr>
-                <Th
-                  p="0"
-                  w="72px"
-                  fontSize="14"
-                  fontWeight="bold"
-                  opacity="0.5"
-                  color={colorText}
-                >
-                  Posição
-                </Th>
-                <Th
-                  p="0"
-                  w="4px"
-                  h="100%"
-                  fontSize="14"
-                  fontWeight="bold"
-                  opacity="0.5"
-                  color={colorText}
-                />
-                <Th
-                  fontSize="14"
-                  fontWeight="bold"
-                  opacity="0.5"
-                  color={colorText}
-                >
-                  Usuário
-                </Th>
-                {isWideVersion && (
-                  <Th
-                    w="44"
-                    fontSize="14"
-                    fontWeight="bold"
-                    opacity="0.5"
-                    color={colorText}
-                    textAlign="left"
-                    p="0"
-                  >
-                    Desafios
-                  </Th>
-                )}
-                <Th
-                  w="44"
-                  fontSize="14"
-                  fontWeight="bold"
-                  opacity="0.5"
-                  color={colorText}
-                  textAlign="center"
-                  px="12"
-                >
-                  Experiência
-                </Th>
-              </Tr>
-            </Thead>
+          <Box display={loaded ? 'block' : 'none'}>
+            <UsersList users={users} isLoading={setLoaded} />
+          </Box>
 
-            <Tbody>
-              {users.map((user, index) => (
-                <Tr key={user.email} w="100%" h="96px" bg={bgColorCard}>
-                  <Td
-                    color={colorText}
-                    p="0"
-                    w="72px"
-                    h="96px"
-                    fontSize="2xl"
-                    fontWeight="500"
-                    textAlign="center"
-                    borderRadius="5px 0 0 5px"
-                  >
-                    {index + 1}
-                  </Td>
-                  <Td p="0" w="4px" h="100%" bg={bgColor} />
+          {!loaded && (
+            <Box mt="10">
+              <SkeletonTheme
+                color={colorSkeleton}
+                highlightColor={skeletonHighlight}
+              >
+                <Skeleton width="100" height="40px" />
+              </SkeletonTheme>
 
-                  <Td
-                    w={!isWideVersion && '48'}
-                    bg={bgColorCard}
-                    color={colorText}
-                    p="0"
-                  >
-                    <Box display="grid" gridTemplateColumns="70px 1fr" ml="6">
-                      <Image
-                        w="16"
-                        h="16"
-                        borderRadius="50%"
-                        src={user.image}
-                        alt={`foto de ${user.name}`}
-                      />
-                      <Flex
-                        ml="4"
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="flex-start"
-                      >
-                        <Heading
-                          fontSize="xl"
-                          fontWeight="600"
-                          lineHeight="2xl"
-                          color={colorTitle}
-                        >
-                          {user.name}
-                        </Heading>
-                        <Box
-                          display="grid"
-                          gridTemplateColumns="16px 1fr"
-                          gridColumnGap="0.562rem"
-                          alignItems="center"
-                          mt="2"
-                        >
-                          <Image
-                            src="/icons/level.svg"
-                            alt="icone indicando para cima"
-                          />
-
-                          <Text
-                            fontSize="md"
-                            fontWeight="normal"
-                            color={colorText}
-                          >
-                            level {user.level}
-                          </Text>
-                        </Box>
-                      </Flex>
-                    </Box>
-                  </Td>
-                  {isWideVersion && (
-                    <Td w="44" color={colorText} px="0">
-                      <Flex fontSize="md" fontWeight="500">
-                        <Box color="blue.500" mr="1">
-                          {user.challenges_completed}
-                        </Box>
-                        <Text color={colorText}>completados</Text>
-                      </Flex>
-                    </Td>
-                  )}
-                  <Td
-                    w="44"
-                    color={colorText}
-                    px="8"
-                    textAlign="center"
-                    borderRadius="0 5px 5px 0"
-                  >
-                    <Flex
-                      fontSize="md"
-                      fontWeight="500"
-                      justifyContent="center"
-                    >
-                      <Box color="blue.500">{user.experience}</Box>
-                      <Text color={colorText} ml="1">
-                        xp
-                      </Text>
-                    </Flex>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+              <SkeletonTheme
+                color={colorSkeleton}
+                highlightColor={skeletonHighlight}
+              >
+                <Box ml="1rem">
+                  <Flex w="100%" h="100px" align="center" gridColumnGap="1rem">
+                    <Skeleton width="3rem" height="3rem" />
+                    <Skeleton circle={true} width="4rem" height="4rem" />
+                    <Skeleton width="500px" height="2.2rem" />
+                  </Flex>
+                  <Flex w="100%" h="100px" align="center" gridColumnGap="1rem">
+                    <Skeleton width="3rem" height="3rem" />
+                    <Skeleton circle={true} width="4rem" height="4rem" />
+                    <Skeleton width="500px" height="2.2rem" />
+                  </Flex>
+                  <Flex w="100%" h="100px" align="center" gridColumnGap="1rem">
+                    <Skeleton width="3rem" height="3rem" />
+                    <Skeleton circle={true} width="4rem" height="4rem" />
+                    <Skeleton width="500px" height="2.2rem" />
+                  </Flex>
+                </Box>
+              </SkeletonTheme>
+            </Box>
+          )}
         </Box>
       </Flex>
     </Flex>

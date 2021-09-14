@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import Cookies from 'js-cookie';
 
 import { ChallengesContext } from './ChallengeContext';
 
@@ -17,23 +18,29 @@ interface CountdownContextData {
   isActive: boolean;
   startCountDown: () => void;
   resetCountdown: () => void;
+  setNewValueCountdown: (timer: number) => void;
 }
 
 interface CountdownContextProviderProps {
   children: ReactNode;
+  timer: number;
 }
 
 export const CountdownContext = createContext({} as CountdownContextData);
 
 let countDownTimeout: NodeJS.Timeout;
-const initialTime = 25 * 60;
 
 export function CountdownProvider({
   children,
+  ...rest
 }: CountdownContextProviderProps): JSX.Element {
   const { startNewChallenge } = useContext(ChallengesContext);
 
-  const [time, setTime] = useState(initialTime);
+  const initialTime = 25 * 60;
+  const [time, setTime] = useState(rest.timer ?? initialTime);
+  const [UserDefinedTime, setUserDefinedTime] = useState(
+    rest.timer ?? initialTime
+  );
   const [progressTime, setProgressTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [hasFinished, setHasFinished] = useState(false);
@@ -50,9 +57,20 @@ export function CountdownProvider({
     clearTimeout(countDownTimeout);
     setIsActive(false);
     setHasFinished(false);
-    setTime(initialTime);
+    setTime(UserDefinedTime);
     setProgressTime(0);
   }
+
+  function setNewValueCountdown(timer: number): void {
+    const newTimerValue = timer * 60;
+
+    setTime(newTimerValue);
+    setUserDefinedTime(newTimerValue);
+  }
+
+  useEffect(() => {
+    Cookies.set('timeConfiguredByUser', String(UserDefinedTime));
+  }, [UserDefinedTime]);
 
   useEffect(() => {
     if (isActive && time > 0) {
@@ -77,6 +95,7 @@ export function CountdownProvider({
         isActive,
         startCountDown,
         resetCountdown,
+        setNewValueCountdown,
       }}
     >
       {children}

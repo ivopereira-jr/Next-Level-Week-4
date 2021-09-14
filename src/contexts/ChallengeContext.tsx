@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
-// import Cookies from 'js-cookie';
 import challenges from '../../challenges.json';
 
 import { LevelUpModal } from '../components/LevelUpModal';
@@ -39,12 +38,12 @@ export function ChallengesProvider({
   children,
   ...rest
 }: ChallengesProviderProps): JSX.Element {
-  const [level, setLevel] = useState(rest.level);
-  const [experience, setExperience] = useState(rest.experience);
+  const [level, setLevel] = useState(rest.level ?? 1);
+  const [experience, setExperience] = useState(rest.experience ?? 0);
   const [currentExperienceToNextLevel, setCurrentExperienceToNextLevel] =
-    useState(rest.currentExperience);
+    useState(rest.currentExperience ?? 0);
   const [challengesCompleted, setChallengesCompleted] = useState(
-    rest.challengesCompleted
+    rest.challengesCompleted ?? 0
   );
 
   const [activeChallenge, setActiveChallenge] = useState(null);

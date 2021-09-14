@@ -48,6 +48,7 @@ export interface HomeProps {
     experience: number;
     challengesCompleted: number;
     currentExperience: number;
+    timeDefineddByUser: number;
   };
 }
 
@@ -101,7 +102,7 @@ export default function Home({ user }: HomeProps): JSX.Element {
                 </SkeletonTheme>
               )}
 
-              <CountdownProvider>
+              <CountdownProvider timer={user.timeDefineddByUser}>
                 <Flex
                   w="100%"
                   maxH="500px"
@@ -191,6 +192,7 @@ export default function Home({ user }: HomeProps): JSX.Element {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
+  const { timeConfiguredByUser } = req.cookies;
 
   if (!session) {
     return {
@@ -212,6 +214,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     experience: Number(response.data.experience),
     challengesCompleted: Number(response.data.challenges_completed),
     currentExperience: Number(response.data.current_experience_to_next_level),
+    timeDefineddByUser: Number(timeConfiguredByUser),
   };
 
   return {

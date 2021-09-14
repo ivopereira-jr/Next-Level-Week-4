@@ -12,8 +12,12 @@ import {
 } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
 import { GetServerSideProps } from 'next';
+import { useState } from 'react';
+import { Loading } from '../components/Loading';
 
 export default function App(): JSX.Element {
+  const [loaded, setLoaded] = useState(false);
+
   const [isLargerThan1370] = useMediaQuery('(max-width: 1370px)');
 
   return (
@@ -22,6 +26,8 @@ export default function App(): JSX.Element {
         <title>Move.it | Bem vindo</title>
       </Head>
 
+      {!loaded && <Loading />}
+
       <Grid
         as="main"
         w="100vw"
@@ -29,6 +35,7 @@ export default function App(): JSX.Element {
         gridTemplateColumns="768px 1fr"
         gridColumnGap="32"
         bg="blue.500"
+        display={loaded ? 'grid' : 'none'}
       >
         <Flex as="section" w="100%" h="100%" alignItems="center">
           <Image
@@ -36,6 +43,7 @@ export default function App(): JSX.Element {
             height={isLargerThan1370 ? '34rem' : '44rem'}
             src="/images/simbolo-login.png"
             alt="logo marca moveit"
+            onLoad={() => setLoaded(true)}
           />
         </Flex>
 

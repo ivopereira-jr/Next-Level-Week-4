@@ -174,7 +174,7 @@ export function ChallengeBox(): JSX.Element {
           px="4"
         >
           <Heading fontSize="4xl" fontWeight="500" lineHeight="10">
-            Inicie um ciclo para receber um desafios
+            Inicie um ciclo para receber um desafio
           </Heading>
           <Image mt="16" mb="4" src="icons/level-up.svg" alt="Level up" />
           <Text fontSize="md" lineHeight="7" fontWeight="normal">

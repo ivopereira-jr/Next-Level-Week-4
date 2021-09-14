@@ -1,5 +1,8 @@
 import { useContext } from 'react';
 import { Flex, Box, useColorModeValue, useMediaQuery } from '@chakra-ui/react';
+
+import { SetTimer } from './SetTimer';
+
 import { CountdownContext } from '../contexts/CountdownContext';
 
 export function Countdown(): JSX.Element {
@@ -13,7 +16,16 @@ export function Countdown(): JSX.Element {
   const bg = useColorModeValue('#fff', 'gray.700');
 
   return (
-    <Flex as="section" w="100%" h="100%" pb={8} direction="column">
+    <Flex
+      as="section"
+      w="100%"
+      h="100%"
+      pb={8}
+      direction="column"
+      position="relative"
+    >
+      <SetTimer />
+
       <Flex
         w="100%"
         h={isLargerThan1370 ? 32 : 36}

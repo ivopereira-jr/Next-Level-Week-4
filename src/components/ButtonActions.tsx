@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Flex, Button, Icon, useColorModeValue, Box } from '@chakra-ui/react';
+import { Flex, Button, Icon, useColorModeValue } from '@chakra-ui/react';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { IoMdCheckmarkCircle, IoMdClose } from 'react-icons/io';
 import { CountdownContext } from '../contexts/CountdownContext';

@@ -47,7 +47,7 @@ export function CountdownProvider({
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
-  const progressPercentBar = Math.floor((progressTime * 100) / initialTime);
+  const progressPercentBar = Math.floor((progressTime * 100) / UserDefinedTime);
 
   function startCountDown(): void {
     setIsActive(true);

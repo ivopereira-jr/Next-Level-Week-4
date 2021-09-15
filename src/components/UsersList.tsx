@@ -86,7 +86,7 @@ export function UsersList({ users, isLoading }: UsersListProps): JSX.Element {
 
       <Tbody>
         {users.map((user, index) => (
-          <Tr key={user.id} w="100%" h="96px" bg={bgColorCard}>
+          <Tr key={user.email} w="100%" h="96px" bg={bgColorCard}>
             <Td
               color={colorText}
               p="0"

@@ -39,7 +39,6 @@ export function ChallengeBox(): JSX.Element {
       w="100%"
       h="100%"
       bg={bg}
-      boxShadow="base"
       borderRadius="5px"
       direction="column"
       alignItems="center"
@@ -57,7 +56,7 @@ export function ChallengeBox(): JSX.Element {
           <Flex
             as="header"
             w="100%"
-            h="100%"
+            h="5rem"
             px="16"
             color="blue.500"
             alignItems="center"
@@ -83,8 +82,9 @@ export function ChallengeBox(): JSX.Element {
             alignItems="center"
             justifyContent="center"
             textAlign="center"
-            mt="9"
+            pt="9"
             px="14"
+            pb="9"
           >
             <Image src={`icons/${activeChallenge.type}.svg`} />
             <Heading
@@ -102,7 +102,6 @@ export function ChallengeBox(): JSX.Element {
               lineHeight="7"
               fontWeight="normal"
               mt="2"
-              pb="10"
             >
               {activeChallenge.description}
             </Text>
@@ -111,7 +110,7 @@ export function ChallengeBox(): JSX.Element {
           <Flex
             as="footer"
             w="100%"
-            h="100%"
+            h="5rem"
             borderTop="1px solid"
             borderColor={colorBorder}
           >

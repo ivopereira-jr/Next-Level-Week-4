@@ -16,7 +16,7 @@ import { fauna } from '../services/fauna';
 
 import { SideBar } from '../components/SideBar';
 import { UsersList } from '../components/UsersList';
-import { ResponseProps } from './home';
+import { UserResponse } from './home';
 
 export type User = {
   id: number;
@@ -33,7 +33,7 @@ interface LeaderboardProps {
 }
 
 interface ResponseData {
-  data: ResponseProps[];
+  data: UserResponse[];
 }
 
 export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {

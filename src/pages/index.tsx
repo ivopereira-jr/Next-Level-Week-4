@@ -27,7 +27,7 @@ export default function App(): JSX.Element {
         <title>Move.it | Bem vindo</title>
       </Head>
 
-      {!loaded && <Loading />}
+      {/* {!loaded && <Loading />} */}
 
       <Grid
         as="main"
@@ -37,7 +37,7 @@ export default function App(): JSX.Element {
         gridColumnGap="32"
         bg="blue.500"
         position="relative"
-        display={loaded ? 'grid' : 'none'}
+        // display={loaded ? 'grid' : 'none'}
       >
         <Flex as="section" w="100%" h="100%" alignItems="center">
           <Image

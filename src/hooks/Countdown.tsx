@@ -6,9 +6,10 @@ import {
   useEffect,
   useState,
 } from 'react';
-import Cookies from 'js-cookie';
 
-import { ChallengesContext } from './ChallengeContext';
+import { api } from '../services/api';
+
+import { ChallengesContext } from '../contexts/ChallengeContext';
 
 interface CountdownContextData {
   minutes: number;
@@ -30,7 +31,7 @@ export const CountdownContext = createContext({} as CountdownContextData);
 
 let countDownTimeout: NodeJS.Timeout;
 
-export function CountdownProvider({
+function CountdownProvider({
   children,
   ...rest
 }: CountdownContextProviderProps): JSX.Element {
@@ -38,7 +39,7 @@ export function CountdownProvider({
 
   const initialTime = 25 * 60;
   const [time, setTime] = useState(rest.timer ?? initialTime);
-  const [UserDefinedTime, setUserDefinedTime] = useState(
+  const [userDefinedTime, setUserDefinedTime] = useState(
     rest.timer ?? initialTime
   );
   const [progressTime, setProgressTime] = useState(0);
@@ -47,7 +48,7 @@ export function CountdownProvider({
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
-  const progressPercentBar = Math.floor((progressTime * 100) / UserDefinedTime);
+  const progressPercentBar = Math.floor((progressTime * 100) / userDefinedTime);
 
   function startCountDown(): void {
     setIsActive(true);
@@ -57,20 +58,34 @@ export function CountdownProvider({
     clearTimeout(countDownTimeout);
     setIsActive(false);
     setHasFinished(false);
-    setTime(UserDefinedTime);
+    setTime(userDefinedTime);
     setProgressTime(0);
   }
 
-  function setNewValueCountdown(timer: number): void {
-    const newTimerValue = timer * 60;
-
-    setTime(newTimerValue);
-    setUserDefinedTime(newTimerValue);
+  async function saveNewTimer(newTimerValue: number): Promise<void> {
+    try {
+      await api.put('/timer', {
+        newTimerValue,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  useEffect(() => {
-    Cookies.set('timeConfiguredByUser', String(UserDefinedTime));
-  }, [UserDefinedTime]);
+  function setNewValueCountdown(timer: number): void {
+    if (!timer || timer === 0) return;
+
+    const newTimerValue = timer * 60;
+
+    clearTimeout(countDownTimeout);
+    setTime(newTimerValue);
+    setUserDefinedTime(newTimerValue);
+    setIsActive(false);
+    setHasFinished(false);
+    setProgressTime(0);
+
+    saveNewTimer(newTimerValue);
+  }
 
   useEffect(() => {
     if (isActive && time > 0) {
@@ -102,3 +117,11 @@ export function CountdownProvider({
     </CountdownContext.Provider>
   );
 }
+
+function useCountdown(): CountdownContextData {
+  const context = useContext(CountdownContext);
+
+  return context;
+}
+
+export { CountdownProvider, useCountdown };

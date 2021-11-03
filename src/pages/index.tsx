@@ -1,5 +1,7 @@
 import Head from 'next/head';
+import { GetServerSideProps } from 'next';
 import { getSession, signIn } from 'next-auth/client';
+import { useState } from 'react';
 import {
   Flex,
   Image,
@@ -11,8 +13,7 @@ import {
   useMediaQuery,
 } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
-import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+
 import { Loading } from '../components/Loading';
 
 export default function App(): JSX.Element {
@@ -35,6 +36,7 @@ export default function App(): JSX.Element {
         gridTemplateColumns="768px 1fr"
         gridColumnGap="32"
         bg="blue.500"
+        position="relative"
         display={loaded ? 'grid' : 'none'}
       >
         <Flex as="section" w="100%" h="100%" alignItems="center">
@@ -114,7 +116,6 @@ export default function App(): JSX.Element {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  // usando o  getSession com o serverside deve passar o req ou context como parametro
   const session = await getSession({ req });
 
   if (session) {

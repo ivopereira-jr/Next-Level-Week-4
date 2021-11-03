@@ -1,12 +1,11 @@
-import { useContext } from 'react';
 import { Flex, Box, useColorModeValue, useMediaQuery } from '@chakra-ui/react';
 
 import { SetTimer } from './SetTimer';
 
-import { CountdownContext } from '../contexts/CountdownContext';
+import { useCountdown } from '../hooks/Countdown';
 
 export function Countdown(): JSX.Element {
-  const { minutes, seconds } = useContext(CountdownContext);
+  const { minutes, seconds } = useCountdown();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, '0').split('');
   const [secondLeft, secondRight] = String(seconds).padStart(2, '0').split('');

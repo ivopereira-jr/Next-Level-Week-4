@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Icon,
@@ -15,11 +15,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FiClock } from 'react-icons/fi';
-
-import { CountdownContext } from '../contexts/CountdownContext';
+import { useCountdown } from '../hooks/Countdown';
 
 export function SetTimer(): JSX.Element {
-  const { setNewValueCountdown } = useContext(CountdownContext);
+  const { setNewValueCountdown } = useCountdown();
 
   const [isOpen, setIsOpen] = useState(false);
   const [newCountDownValue, setNewCountDownValue] = useState('');
@@ -90,6 +89,7 @@ export function SetTimer(): JSX.Element {
                   outline: 'none',
                 }}
                 onClick={handleSetNewTime}
+                disabled={newCountDownValue === '' && true}
               >
                 Salvar
               </Button>

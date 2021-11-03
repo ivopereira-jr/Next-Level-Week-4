@@ -8,13 +8,13 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
+import { useCountdown } from '../hooks/Countdown';
 import { ChallengesContext } from '../contexts/ChallengeContext';
-import { CountdownContext } from '../contexts/CountdownContext';
 
 export function ChallengeBox(): JSX.Element {
   const { activeChallenge, resetChallenge, completeChallenge } =
     useContext(ChallengesContext);
-  const { resetCountdown } = useContext(CountdownContext);
+  const { resetCountdown } = useCountdown();
 
   function handleChanllengeSucceeded(): void {
     completeChallenge();

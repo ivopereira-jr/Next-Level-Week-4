@@ -21,12 +21,12 @@ import { Countdown } from '../components/Countdown';
 import { ExperienceBar } from '../components/ExperienceBar';
 import { Profile } from '../components/Profile';
 import { ChallengeBox } from '../components/ChallengeBox';
-import { ButtonActions } from '../components/ButtonActions';
+import { ButtonsCountdown } from '../components/ButtonsCountdown';
 
-import { CountdownProvider } from '../contexts/CountdownContext';
+import { CountdownProvider } from '../hooks/Countdown';
 import { ChallengesProvider } from '../contexts/ChallengeContext';
 
-export interface ResponseProps {
+export interface UserResponse {
   ref: never;
   ts: number;
   data: {
@@ -37,6 +37,7 @@ export interface ResponseProps {
     experience: string;
     current_experience_to_next_level: string;
     challenges_completed: string;
+    timer_defined_by_user: string;
   };
 }
 
@@ -48,7 +49,7 @@ export interface HomeProps {
     experience: number;
     challengesCompleted: number;
     currentExperience: number;
-    timeDefineddByUser: number;
+    timerDefinedByUser: number;
   };
 }
 
@@ -102,7 +103,7 @@ export default function Home({ user }: HomeProps): JSX.Element {
                 </SkeletonTheme>
               )}
 
-              <CountdownProvider timer={user.timeDefineddByUser}>
+              <CountdownProvider timer={user.timerDefinedByUser}>
                 <Flex
                   w="100%"
                   maxH="500px"
@@ -121,7 +122,7 @@ export default function Home({ user }: HomeProps): JSX.Element {
                     <Profile user={user} isLoading={setLoaded} />
                     <CompletedChallenges />
                     <Countdown />
-                    <ButtonActions />
+                    <ButtonsCountdown />
                   </Flex>
 
                   <Box
@@ -192,7 +193,6 @@ export default function Home({ user }: HomeProps): JSX.Element {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
-  const { timeConfiguredByUser } = req.cookies;
 
   if (!session) {
     return {
@@ -203,7 +203,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   }
 
-  const response: ResponseProps = await fauna.query(
+  const response = await fauna.query<UserResponse>(
     q.Get(q.Match(q.Index('user_by_email'), q.Casefold(session.user.email)))
   );
 
@@ -214,7 +214,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     experience: Number(response.data.experience),
     challengesCompleted: Number(response.data.challenges_completed),
     currentExperience: Number(response.data.current_experience_to_next_level),
-    timeDefineddByUser: Number(timeConfiguredByUser),
+    timerDefinedByUser: Number(response.data.timer_defined_by_user),
   };
 
   return {

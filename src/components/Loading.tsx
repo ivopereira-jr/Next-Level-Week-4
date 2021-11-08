@@ -8,10 +8,6 @@ export function Loading(): JSX.Element {
       justifyContent="center"
       alignItems="center"
       flexDir="column"
-      position="absolute"
-      top="0"
-      left="0"
-      zIndex="333"
     >
       <Box>
         <Heading color="gray.500">Carregando...</Heading>

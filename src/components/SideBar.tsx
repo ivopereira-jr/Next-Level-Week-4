@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useState, useEffect, useRef } from 'react';
 import {
   Flex,
   Image,
@@ -12,10 +13,10 @@ import {
 } from '@chakra-ui/react';
 import { BsAward, BsHouseDoor } from 'react-icons/bs';
 import { FiSun, FiMoon } from 'react-icons/fi';
-import { useState } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 export function SideBar(): JSX.Element {
+  const imageRef = useRef<HTMLImageElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const { asPath } = useRouter();
@@ -35,6 +36,12 @@ export function SideBar(): JSX.Element {
     'linear-gradient(180deg, #FFFFFF 0%, #EAEBED 100%)',
     'linear-gradient(180deg, #2d3748b2 0%, #2D3748 100%)'
   );
+
+  useEffect(() => {
+    if (imageRef.current?.complete) {
+      setImageLoaded(true);
+    }
+  }, []);
 
   return (
     <Flex
@@ -56,6 +63,7 @@ export function SideBar(): JSX.Element {
       <Image
         src="/icons/logo-sidebar.svg"
         alt="Logo marca moveit"
+        ref={imageRef}
         w={12}
         h={10}
         px={!isWideVersion && '2%'}

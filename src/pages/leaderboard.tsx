@@ -2,7 +2,7 @@
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Flex,
   Heading,
@@ -50,6 +50,12 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
     lg: true,
   });
 
+  useEffect(() => {
+    if (users) {
+      setLoaded(true);
+    }
+  }, [users]);
+
   return (
     <Flex as="main" w="100%" h="100%" bg={bgColor}>
       <Head>
@@ -78,7 +84,7 @@ export default function Leaderboard({ users }: LeaderboardProps): JSX.Element {
           </Heading>
 
           <Box display={loaded ? 'block' : 'none'}>
-            <UsersList users={users} isLoading={setLoaded} />
+            <UsersList users={users} />
           </Box>
 
           {!loaded && (
@@ -133,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   // get || update the experience field
-  const response: ResponseData = await fauna.query(
+  const response = await fauna.query<ResponseData>(
     q.Map(
       q.Paginate(q.Match(q.Index('users_by_experience_descending'))),
       q.Lambda(
@@ -161,6 +167,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       id: user.ts,
       name: user.data.name,
       image: user.data.image,
+      email: user.data.email,
       level: user.data.level,
       challenges_completed: user.data.challenges_completed,
       experience: user.data.experience,
